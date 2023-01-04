@@ -35,7 +35,7 @@ class Cat {
  - to hold constructor for coordinates, image, key events, and movement 
 }
 Class Rat {
- - to hold constructor for coordinates, image, key events, and movement 
+ - to hold constructor for coordinates, image, key events, and movement s
 }
 Class Mouse {
  - to hold constructor for coordinates, image, key events, and movement 
