@@ -10,6 +10,5 @@ function startGame() {
   displayGame.style.display = 'block'
   displayGame.style.margin = 'auto'
   startDiv.style.display = 'none'
-  startBtn.innerText = 'End Game'
 }
 

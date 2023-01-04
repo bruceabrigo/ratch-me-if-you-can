@@ -96,6 +96,7 @@ class BMO {
     
 
     this.render = function () {
+      ctx.drawImage
       ctx.fillStyle = this.color
       ctx.fillRect(this.x, this.y, this.width, this.height)
     }
@@ -105,15 +106,25 @@ class BMO {
 const player = new BMO(25, 150, 16, 16, 'lightBlue')
 
 
+
 // gameLoop
 const gameLoop = () => {
   //  create keylisteners to allow player movement
   
+// cycle through enemies class
+// generate each enemy
+
+
+
   // add all characters to gameLoop
   ctx.clearRect(0, 0, game.width, game.height)
   player.render()
+  target1.render()
+  target1.generateMice()
   player.moveCat()
 }
+
+
 
 /* ---------- Calls and Such ---------- */
 // call gameLoop and setInterval
