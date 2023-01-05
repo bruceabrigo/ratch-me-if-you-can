@@ -26,6 +26,10 @@ game.height = '300'
 // create class objects for Cat, Mice, Rats, and Mouse Traps.
 // lets call the cat BMO (I rlly like Adventure Time)
 // Enemy classes were moved to a separate js file.
+
+const bmoImage = new Image()
+bmoImage.src = 'js/cat/THE CAT.png'
+
 class BMO {
   constructor(x, y, width, height, color) {
     this.x = x
@@ -35,7 +39,7 @@ class BMO {
     this.color = color
     this.alive = true;
     //  render contents (for now, create a rectangle)
-    this.speed = 15
+    this.speed = 4.5
     // create movement functionality 
     this.movement = {
       up: false,
@@ -69,14 +73,14 @@ class BMO {
       // create left and right movements, decrease speed from 20 to allow for slower movement
       // do not allow player to make any contact with right-most border
       if (this.movement.right) {
-        this.x += this.speed - 8
+        this.x += this.speed - 1
 
         if (this.x >= 425)
         this.x = 425
       }
 
       if (this.movement.left) {
-        this.x -= this.speed - 5
+        this.x -= this.speed - 0.05
 
         if (this.x <= 0)
         this.x = 0
@@ -90,16 +94,17 @@ class BMO {
         }
       }
     }
-    x = x+1
-    console.log('eat butt', x)
 
     this.render = function () {
       ctx.drawImage
       ctx.fillStyle = this.color
       ctx.fillRect(this.x, this.y, this.width, this.height)
+      ctx.drawImage(bmoImage, this.x, this.y, this.width, this.height)
     }
   }
 }
+
+
 
 
 // gameLoop
@@ -113,16 +118,20 @@ function gameLoop () {
   ctx.clearRect(0, 0, game.width, game.height)
   player.render()
   player.moveCat()
-  // target1.render()
+  target1.render()
+  target1.animateMouse()
+  // target1.displayMiceArmy()
+  target2.render()
+  target2.animateMouse()
+  trap.render()
+  trap.revealTrap()
 }
 
-
-
-const player = new BMO(25, 150, 16, 16, 'lightBlue')
+const player = new BMO(25, 150, 45, 45, 'white')
 
 /* ---------- Calls and Such ---------- */
 // call gameLoop and setInterval
-const gameInterval = setInterval(gameLoop, 60)
+const gameInterval = setInterval(gameLoop, 16)
 
 document.addEventListener('keydown', (e) => {
   player.setMovement(e.key)
@@ -134,3 +143,4 @@ document.addEventListener('keyup', (e) => {
     player.unsetMovement(e.key)
   }
 })
+
