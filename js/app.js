@@ -5,7 +5,7 @@ const ctx = game.getContext('2d')
 
 // style the canvas height and width
 game.setAttribute('width', getComputedStyle(game)['width'])
-game.width = '500'
+game.width = '600'
 game.setAttribute('hieght', getComputedStyle(game)['height'])
 game.height = '300'
 // create game loop function 
@@ -20,8 +20,6 @@ game.height = '300'
 // create function that loads Canvas after Start Game button is pressed
 // while start game/h2p screen is displayed, gameRunning should be false
 // while star game button is pressed, gameRunning should be true and display canvas
-
-
 
 
 /* ---------- Game Characters ---------- */
@@ -92,8 +90,8 @@ class BMO {
         }
       }
     }
-
-    
+    x = x+1
+    console.log('eat butt', x)
 
     this.render = function () {
       ctx.drawImage
@@ -103,28 +101,24 @@ class BMO {
   }
 }
 
-const player = new BMO(25, 150, 16, 16, 'lightBlue')
-
-
 
 // gameLoop
-const gameLoop = () => {
+function gameLoop () {
   //  create keylisteners to allow player movement
   
-// cycle through enemies class
-// generate each enemy
-
-
-
+  // cycle through enemies class
+  // generate each enemy
+  
   // add all characters to gameLoop
   ctx.clearRect(0, 0, game.width, game.height)
   player.render()
-  target1.render()
-  target1.generateMice()
   player.moveCat()
+  // target1.render()
 }
 
 
+
+const player = new BMO(25, 150, 16, 16, 'lightBlue')
 
 /* ---------- Calls and Such ---------- */
 // call gameLoop and setInterval
