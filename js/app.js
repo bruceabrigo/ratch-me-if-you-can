@@ -107,9 +107,9 @@ class BMO {
 
 /* ------------------------------------------ Target Arrays ------------------------------------------ */
 
-let mouseTimer = 0
-let mouseInterval = 500
-let resetTimer = 0
+// let mouseTimer = 0
+// let mouseInterval = 500
+// let resetTimer = 0
 const miceArray = []
 
 /* ------------------------------------------ Mice Class ------------------------------------------ */
@@ -124,8 +124,7 @@ class Mouse {
     this.color = color
     this.alive = true;
     this.speed = 4
-    this.miceArray = []
-  }
+    }
 
 
     render () {
@@ -143,6 +142,9 @@ class Mouse {
       if(this.x <= -150) {
         this.x = 600
         this.y = Math.floor(Math.random() * game.height) - 10
+        for (let i; miceArray.length; i++) {
+          miceArray.splice([i], 1)
+        }
       }
     }
 
@@ -153,12 +155,16 @@ class Mouse {
   function newMice () {
 
     // 
+    setInterval(() => {
+      let randmicer = Math.ceil(Math.random() * 35);
+      for( let i = 0; i < randmicer; i++) {
+              miceArray.push(new Mouse(600, Math.floor(Math.random() * game.height) - 25, 30, 16, 'purple'))
+              // miceArray[index++ %  miceArray.length]
+              console.log('mice attack')
+              }
+}, 1000);
 
-        for( let i = 0; i < 35; i++) {
-        miceArray.push(new Mouse(600, Math.floor(Math.random() * game.height) - 25, 30, 16, 'purple'))
-        }
-
-   console.log(miceArray)
+   console.log()
  }
 
   /* -------------------------------- */
@@ -167,7 +173,7 @@ class Mouse {
   // create empty array for mouse class
 const mouse = new Mouse(600, Math.floor(Math.random() * game.height) - 25, 55, 47, 'purple')
 
-// for loop pushes new Mouse() into miceArray (no greater than 100 mice are generated)
+// for loop pushes new Mouse() into miceArray (no greater than 35 mice are generated)
 
 /* ------------------------------------------ Rat Class ------------------------------------------ */
 class Rat {
@@ -190,15 +196,15 @@ class Rat {
       ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 
+    /* ------------------------------------------ Rat Class ------------------------------------------ */
+
      animateMouse() {
       this.x -= this.speed
 
       if(this.x <= -165) {
         this.x = 600
         this.y = Math.floor(Math.random() * game.height) - 10
-        for (let i; miceArray.length; i++) {
-          miceArray.splice([i], 1)
-        }
+
       }
     }
   }
@@ -251,8 +257,13 @@ newMice()
 // move all to one file
 
 /* ------------------------------------------ Timer ------------------------------------------ */
-
-
+let index = 0
+setInterval(function() {
+  console.log()
+  // if(index == miceArray.length) {
+  //   clearInterval(interval)
+  // }
+}, 60)
 
 
 /* ------------------------------------------ Game Loop! ------------------------------------------ */
