@@ -1,8 +1,8 @@
 // Create game variables
 const game = document.getElementById('canvas')
-
 const ctx = game.getContext('2d')
 
+let runGame = false
 // style the canvas height and width
 game.setAttribute('width', getComputedStyle(game)['width'])
 game.width = '600'
@@ -28,15 +28,14 @@ game.height = '300'
 // Enemy classes were moved to a separate js file.
 
 const bmoImage = new Image()
-bmoImage.src = 'js/cat/THE CAT.png'
+bmoImage.src = 'js/cat/pngkit_pusheen-cat-png_5427076.png'
 
 class BMO {
-  constructor(x, y, width, height, color) {
+  constructor(x, y, width, height) {
     this.x = x
     this.y = y
     this.width = width
     this.height = height
-    this.color = color
     this.alive = true;
     //  render contents (for now, create a rectangle)
     this.speed = 4.5
@@ -47,7 +46,6 @@ class BMO {
     }
     // create key events
     this.setMovement = function (key) {
-      console.log('key down', key)
       if (key.toLowerCase() == 'w') {this.movement.up = true}
       if (key.toLowerCase() == 'a') {this.movement.left = true}
       if (key.toLowerCase() == 's') {this.movement.down = true}
@@ -55,7 +53,6 @@ class BMO {
     }
     // unsets key events
     this.unsetMovement = function (key) {
-      console.log('key up', key)
       if (key.toLowerCase() == 'w') {this.movement.up = false}
       if (key.toLowerCase() == 'a') {this.movement.left = false}
       if (key.toLowerCase() == 's') {this.movement.down = false}
@@ -89,21 +86,21 @@ class BMO {
       if (this.movement.down ) {
         // allow player to move down from initialized position
         this.y += this.speed
-        if(this.y >= 285) {
-          this.y = 285
+        if(this.y >= 240) {
+          this.y = 240
         }
       }
     }
 
     this.render = function () {
       ctx.drawImage
-      ctx.fillStyle = this.color
       // ctx.fillRect(this.x, this.y, this.width, this.height)
       ctx.drawImage(bmoImage, this.x, this.y, this.width, this.height)
     }
   }
 }
 
+const player = new BMO(25, 150, 35, 28)
 
 /* ------------------------------------------ Target Arrays ------------------------------------------ */
 
@@ -111,78 +108,73 @@ class BMO {
 // let mouseInterval = 500
 // let resetTimer = 0
 const miceArray = []
+const ratArray = []
+const trapArray = []
 
 /* ------------------------------------------ Mice Class ------------------------------------------ */
 const mouseImage = new Image()
 mouseImage.src = 'targets/mouse.png'
+
 class Mouse {
-  constructor(x, y, width, height, color) {
+  constructor(x, y, width, height) {
     this.x = x
     this.y = y
     this.width = width
     this.height = height
-    this.color = color
     this.alive = true;
-    this.speed = 4
+    this.speed = 3.5
     }
-
 
     render () {
       ctx.drawImage
-      ctx.fillStyle = this.color
-      ctx.fillRect(this.x, this.y, this.width, this.height)
       ctx.drawImage(mouseImage, this.x, this.y, this.width, this.height)
 
     }
 
-
      animateMouse() {
       this.x -= this.speed
+    }
 
-      if(this.x <= -150) {
-        this.x = 600
-        this.y = Math.floor(Math.random() * game.height) - 10
-        for (let i; miceArray.length; i++) {
-          miceArray.splice([i], 1)
-        }
+    deleteMouse() {
+      if (this.x + this.width <= -165) {
+        miceArray.forEach(mouse => {
+          miceArray.splice(miceArray.indexOf(mouse), 1)
+        })
       }
     }
 
     
   }
   
-  /* ---------- Mice Class ---------- */
+  /* ---------- Mice Array ---------- */
   function newMice () {
 
-    // 
     setInterval(() => {
-      let randmicer = Math.ceil(Math.random() * 35);
-      for( let i = 0; i < randmicer; i++) {
-              miceArray.push(new Mouse(600, Math.floor(Math.random() * game.height) - 25, 30, 16, 'purple'))
-              // miceArray[index++ %  miceArray.length]
-              console.log('mice attack')
+      for ( let i = 0; i < 1; i++) {
+              miceArray.push(new Mouse(600, Math.floor(Math.random() * game.height) - 25, 55, 47))
               }
-}, 1000);
+    }, 2100);
 
-   console.log()
- }
+  }
 
   /* -------------------------------- */
 
 
   // create empty array for mouse class
-const mouse = new Mouse(600, Math.floor(Math.random() * game.height) - 25, 55, 47, 'purple')
+const mouse = new Mouse()
 
 // for loop pushes new Mouse() into miceArray (no greater than 35 mice are generated)
 
 /* ------------------------------------------ Rat Class ------------------------------------------ */
+const ratImage = new Image()
+ratImage.src = 'targets/rat.png'
+
 class Rat {
-  constructor(x, y, width, height, color) {
+  constructor(x, y, width, height) {
     this.x = x
     this.y = y
     this.width = width
     this.height = height
-    this.color = color
     this.alive = true;
     // add this.img
     // give Mouse spawn functionality form right side of canvas
@@ -191,37 +183,54 @@ class Rat {
     this.speed = 5.5
     // create movement functionality 
   }
+
+
     render () {
-      ctx.fillStyle = this.color
-      ctx.fillRect(this.x, this.y, this.width, this.height)
+      ctx.drawImage
+      // ctx.fillStyle = this.color
+      ctx.drawImage(ratImage, this.x, this.y, this.width, this.height)
     }
 
-    /* ------------------------------------------ Rat Class ------------------------------------------ */
-
-     animateMouse() {
+    animateRat() {
       this.x -= this.speed
+    }
 
-      if(this.x <= -165) {
-        this.x = 600
-        this.y = Math.floor(Math.random() * game.height) - 10
-
+    deleteRat() {
+      if (this.x <= -165) {
+        ratArray.forEach(Rat => {
+          ratArray.splice(ratArray.indexOf(Rat), 1)
+        })
       }
     }
+
+
   }
 
   // create empty array for mouse class
+   /* ------------------------------------------ Rat Array ------------------------------------------ */
 
-const rat = new Rat(600, Math.floor(Math.random() * game.height) - 25, 30, 16, 'pink')
+   function newRats () {
+
+    setInterval(() => {
+      for (let i = 0; i < 1; i++) {
+        ratArray.push(new Rat(600, Math.floor(Math.random() * game.width) - 25, 50, 36))
+      }
+    }, 2100)
+   }
+
+const rat = new Rat()
 
 /* ------------------------------------------ Enemy Class ------------------------------------------ */
 //  mice traps will decrement player health 
+const trapImage = new Image()
+trapImage.src = 'targets/Rat_trap.webp'
+
 class RatTrap {
-  constructor(x, y, width, height, color) {
+  constructor(x, y, width, height) {
     this.x = x
     this.y = y
     this.width = width
     this.height = height
-    this.color = color
     this.alive = true;
     // add this.img
     // give Mouse spawn functionality form right side of canvas
@@ -231,87 +240,164 @@ class RatTrap {
     // create movement functionality 
   }
     render () {
-      ctx.fillStyle = this.color
-      ctx.fillRect(this.x, this.y, this.width, this.height)
+      ctx.drawImage
+      ctx.drawImage(trapImage, this.x, this.y, this.width, this.height)
     }
 
      revealTrap() {
       this.x -= this.speed
+    }
 
-      if(this.x <= -155) {
-        this.x = 600
-        this.y = Math.floor(Math.random() * game.height) - 10
+    deleteTrap() {
+      if (this.x <= -165) {
+        trapArray.forEach(trap => {
+          trapArray.splice(trapArray.indexOf(trap), 1)
+        })
       }
     }
   }
 
+const trap = new RatTrap()
 
+    /* ---------- Mouse Trap Array ---------- */
 
-  // create empty array for mouse class
+    function newTrap() {
 
-const trap = new RatTrap(600, Math.floor(Math.random() * game.height) - 25, 30, 16, 'red')
+      setInterval(() => {
+        for ( let i = 0; i < 1; i++) {
+          trapArray.push(new RatTrap(600, Math.floor(Math.random() * game.height) - 25, 28, 90, 'red'))
+        }
+      }, 5000)
 
-// create separate loops for enemy and target classes
-newMice()
+    }
+    
+    // move all to one file
+    
+    
+    /* ---------- Collision Detection Baby! ---------- */
+    
+    const displayScore = document.getElementById('score-counter')
+    
+    let scoreCounter = 0
+    
+    const micePoints = (target) => {
+      let addMice = 1
+      
+      if(player.x < target.x + target.width 
+        && player.x + player.width > target.x
+        && player.y < target.y + target.height
+        && player.y + player.height > target.y) {
+          miceArray.forEach(mouse => {
+            miceArray.splice(miceArray.indexOf(mouse), 1)
+          })
+          scoreCounter += addMice
+          console.log('Current Score - Mouse: ', scoreCounter)
+          // target.alive = false
+          displayScore.innerText = scoreCounter
+        }
+      }
+      /* ---------- RATS! ---------- */
+      
+      const ratPoints = (target) => {
+        let addRat = 2
+        
+        if(player.x < target.x + target.width 
+          && player.x + player.width > target.x
+          && player.y < target.y + target.height
+          && player.y + player.height > target.y) {
+            ratArray.forEach(Rat => {
+              ratArray.splice(ratArray.indexOf(Rat), 1)
+            })
+            scoreCounter += addRat
+            console.log('Two POINTS brotha!')
+            // target.alive = false
+            displayScore.innerText = scoreCounter
+          }
+        }
+        /* ---------- OUCH! ---------- */
+        
+        const theseHurt = (target) => {
+          if(player.x < target.x + target.width 
+            && player.x + player.width > target.x
+            && player.y < target.y + target.height
+            && player.y + player.height > target.y) {
+              trapArray.forEach(trap => {
+                trapArray.splice(trapArray.indexOf(trap), 1)
+              })
+              console.log('Owie! That hurt')
+              
+              // target.alive = false
+              
+            }
+          }
+          
+          /* ------------------------------------------ Game Loop! ------------------------------------------ */
+          
+          function gameLoop () {  
+            // add a setTimeout
+            /* --- Foh da Character!--- */
+            ctx.clearRect(0, 0, game.width, game.height)
+            player.render()
+            player.moveCat()
+            mouse.animateMouse()
+            // mouse.newMice()
+            /* --- Collision Detection --- */
+            if (mouse.alive) {
+              miceArray.forEach((mouse, i) => { 
+                mouse.render() 
+                mouse.animateMouse()
+                mouse.deleteMouse()
+                micePoints(mouse)
+              })
+              
+            }
+            
+            if (trap.alive) {
+              trapArray.forEach((trap) => {
+                trap.render()
+                trap.revealTrap()
+                trap.deleteTrap()
+                theseHurt(trap)
+              })
+            }
+        
+            if (rat.alive) {
+              ratArray.forEach((rat) => {
+                rat.render()
+                rat.animateRat()
+                rat.deleteRat()
+                ratPoints(rat)
+              })
+            }
+          }
+          
+          if (scoreCounter <= 2) {
+            clearInterval(gameLoop)
+            console.log('end game')
+          }
+          const gameInterval = setInterval(gameLoop, 16)
 
-// move all to one file
-
-/* ------------------------------------------ Timer ------------------------------------------ */
-let index = 0
-setInterval(function() {
-  console.log()
-  // if(index == miceArray.length) {
-  //   clearInterval(interval)
-  // }
-}, 60)
-
-
-/* ------------------------------------------ Game Loop! ------------------------------------------ */
-
-function gameLoop () {  
-
-
-  // miceArray.forEach(mice => console.log(mice))
-  // add a setTimeout
-  /* --- Foh da Character!--- */
-  ctx.clearRect(0, 0, game.width, game.height)
-  player.render()
-  player.moveCat()
-  mouse.render()
-  mouse.animateMouse()
-  // mouse.newMice()
-  rat.render()
-  rat.animateMouse()
-  trap.render()
-  trap.revealTrap()
-  /* --- Collision Detection --- */
-  if(mouse.alive) {
-    miceArray.forEach((mouse, i) => { 
-      mouse.render() 
-      mouse.animateMouse()
+          /* ------------------------------------------ End Game Loop! ------------------------------------------ */
+          
+          
+          
+          
+          
+          
+    /* ---------- Calls and Such ---------- */
+    // call gameLoop and setInterval
+    
+    document.addEventListener('keydown', (e) => {
+      player.setMovement(e.key)
     })
-    micePoints(mouse)
-    ratPoints(rat)
-    theseHurt(trap)
-  }
-}
+    // add event lister for a keyUp event
+    
+    document.addEventListener('keyup', (e) => {
+      if (['w', 'a', 's', 'd'].includes(e.key)) {
+        player.unsetMovement(e.key)
+      }
+    })
 
-const gameInterval = setInterval(gameLoop, 16)
-
-
-const player = new BMO(25, 150, 45, 45, 'white')
-
-/* ---------- Calls and Such ---------- */
-// call gameLoop and setInterval
-
-document.addEventListener('keydown', (e) => {
-  player.setMovement(e.key)
-})
-// add event lister for a keyUp event
-
-document.addEventListener('keyup', (e) => {
-  if (['w', 'a', 's', 'd'].includes(e.key)) {
-    player.unsetMovement(e.key)
-  }
-})
-
+newMice()
+newRats()
+newTrap()
