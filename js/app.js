@@ -10,6 +10,10 @@ const ctx = game.getContext('2d')
 // style the canvas height and width
 
 let gameInterval
+let miceInterval
+let ratInterval
+let trapInterval
+
 game.setAttribute('width', getComputedStyle(game)['width'])
 game.width = '600'
 game.setAttribute('hieght', getComputedStyle(game)['height'])
@@ -30,12 +34,16 @@ function startGame() {
   console.log('start game!')
   if (!gameInterval) {
     gameInterval = setInterval(gameLoop, 16)
+    miceInterval = setInterval(newMice, 1800)
+    ratInterval = setInterval(newRats, 2100)
+    trapInterval = setInterval(newTrap, 5000)
 } 
   // clearInterval(gameInterval)
 
-  displayGame.style.display = 'block'
-  displayGame.style.margin = 'auto'
+  // displayGame.style.display = 'block'
+  // displayGame.style.margin = 'auto'
   startDiv.style.display = 'none'
+  winScreen.style.display = 'block'
 }
 
 function endGame () {
@@ -169,13 +177,9 @@ class Mouse {
   
   /* ---------- Mice Array ---------- */
   function newMice () {
-
-    setInterval(() => {
       for ( let i = 0; i < 1; i++) {
-              miceArray.push(new Mouse(600, Math.floor(Math.random() * game.height) - 25, 55, 47))
+              miceArray.push(new Mouse(600, Math.floor(Math.random() * game.height) - 25, 35, 20))
               }
-    }, 2100);
-
   }
 
   /* -------------------------------- */
@@ -231,12 +235,9 @@ class Rat {
    /* ------------------------------------------ Rat Array ------------------------------------------ */
 
    function newRats () {
-
-    setInterval(() => {
       for (let i = 0; i < 1; i++) {
         ratArray.push(new Rat(600, Math.floor(Math.random() * game.width) - 25, 50, 36))
       }
-    }, 2100)
    }
 
 const rat = new Rat()
@@ -244,7 +245,7 @@ const rat = new Rat()
 /* ------------------------------------------ Enemy Class ------------------------------------------ */
 //  mice traps will decrement player health 
 const trapImage = new Image()
-trapImage.src = 'targets/Rat_trap.webp'
+trapImage.src = 'targets/Rat_trap.png'
 
 class RatTrap {
   constructor(x, y, width, height) {
@@ -283,13 +284,9 @@ const trap = new RatTrap()
     /* ---------- Mouse Trap Array ---------- */
 
     function newTrap() {
-
-      setInterval(() => {
         for ( let i = 0; i < 1; i++) {
-          trapArray.push(new RatTrap(600, Math.floor(Math.random() * game.height) - 25, 28, 90, 'red'))
+          trapArray.push(new RatTrap(600, Math.floor(Math.random() * game.height) - 25, 45, 28))
         }
-      }, 5000)
-
     }
     
     // move all to one file
@@ -298,6 +295,7 @@ const trap = new RatTrap()
     /* ---------- Collision Detection Baby! ---------- */
     
     const displayScore = document.getElementById('score-counter')
+    const winScreen = document.getElementById('winScreen')
     
     let scoreCounter = 0
     
@@ -313,12 +311,12 @@ const trap = new RatTrap()
           })
           scoreCounter += addMice
           console.log('Current Score - Mouse: ', scoreCounter)
-          // target.alive = false
           displayScore.innerText = scoreCounter
 
           if (scoreCounter >= 25) {
             console.log('You beat the timer!')
             clearInterval(gameInterval)
+            winScreen.innerText = 'YOU WIN! You Collected All 25 Points'
           }
         }
       }
@@ -340,8 +338,8 @@ const trap = new RatTrap()
             if (scoreCounter >= 25) {
               console.log('You beat the timer!')
               clearInterval(gameInterval)
+              winScreen.innerText = 'YOU WIN! You Collected All 25 Points'
             }
-            // target.alive = false
             displayScore.innerText = scoreCounter
           }
         }
@@ -358,10 +356,7 @@ const trap = new RatTrap()
               console.log('Owie! That hurt')
 
               clearInterval(gameInterval)
-
-              
-              // target.alive = false
-              
+              winScreen.innerText = 'MWAHAHA! You Lose! You Hit The Trap Bozo... Totally not rad brotha'
             }
           }
 

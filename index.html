@@ -16,36 +16,41 @@
   </header>
   <div id="container">
     <div id="points">
-      <h2 id="score-counter">Score:</h2>
+      <h2>Score: <span id="score-counter">0</span></h2>
     </div>
-    <main>
-        <canvas id="canvas" style='display: ;'></canvas>
+    <main id="main">
+
+      <div id="startScreen" class="start screen">
+        <!-- CHANGE DISPLAY TO 'BLOCK' TO START GAME FUNCTION TO WORK -->
+          <h2 class="h2p">How to Play</h2>
+          <p class="instructions">BMO (the cat) is on the hunt to catch mad treatts from his owner
+          <br>
+          Help BMO get what he needs by tracking down rats and mice!
+          <br>
+          Use WASD keys to move BMO where he needs to! But...
+          </p>
+
+          <p class="caution">LOOK OUT FOR TRAPS!
+          <br>
+          Traps can kill! Thus ending the game, get to 25 points and win the best treats ever.
+          </p>
+
+          <p class="points">
+          1 Mouse = 1PT | 1 Giant Rat = 2PT
+          <br>
+          1 Trap = Game Over!!
+          </p>
+
+      </div>
+        <!-- WIN SCREEN -->
+      <div id="winScreen" style="display: none"></div>
+        <!-- CANVAS -->
+        <canvas id="canvas" class="canvas" ></canvas>
                   <!-- CHANGE DISPLAY TO 'NONE' TO START GAME FUNCTION TO WORK -->
     </main>
   </div>
 
-  <div id="startScreen" style='display: none;'>
-                      <!-- CHANGE DISPLAY TO 'BLOCK' TO START GAME FUNCTION TO WORK -->
-    <h2 class="h2p">How to Play</h2>
-    <p class="instructions">BMO (the cat) is on the hunt to catch mad treatts from his owner
-      <br>
-      Help BMO get what he needs by tracking down cats and mice!
-      <br>
-      Use WASD keys to move BMO where he needs to! But...
-    </p>
 
-    <p class="caution">LOOK OUT FOR TRAPS!
-      <br>
-      Traps can kill! Thus ending the game, get to 25 points and win the best treats ever.
-    </p>
-
-    <p class="points">
-      1 Mouse = 1PT | 1 Giant Rat = 2PT
-      <br>
-      1 Trap = Game Over!!
-    </p>
-
-  </div>
 
     <button id="start-game">Start Game</button>
     <h2>Press Start Game!</h2>
