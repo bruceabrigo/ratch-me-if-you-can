@@ -39,17 +39,20 @@ canvas {
 #startScreen {
   height: 330px;
   width: 595px;
-  left: 30%;
   position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1;
 }
 #winScreen {
   height: 330px;
   color: white;
   width: 595px;
-  top: 350px;
-  left: 30%;
   position: absolute;
+  top: 40%;
+  transform: translateY(-40%);
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2;
   /* top: 350px; */
 }
