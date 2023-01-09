@@ -1,9 +1,15 @@
 // Create game variables
 const game = document.getElementById('canvas')
+const displayGame = document.querySelector('canvas')
+const startDiv = document.getElementById('startScreen')
+document.getElementById('start-game').addEventListener('click', startGame)
 const ctx = game.getContext('2d')
 
-let runGame = false
+// let gameInterval = false
+// let setGameInterval = null
 // style the canvas height and width
+
+let gameInterval
 game.setAttribute('width', getComputedStyle(game)['width'])
 game.width = '600'
 game.setAttribute('hieght', getComputedStyle(game)['height'])
@@ -20,6 +26,21 @@ game.height = '300'
 // create function that loads Canvas after Start Game button is pressed
 // while start game/h2p screen is displayed, gameRunning should be false
 // while star game button is pressed, gameRunning should be true and display canvas
+function startGame() {
+  console.log('start game!')
+  if (!gameInterval) {
+    gameInterval = setInterval(gameLoop, 16)
+} 
+  // clearInterval(gameInterval)
+
+  displayGame.style.display = 'block'
+  displayGame.style.margin = 'auto'
+  startDiv.style.display = 'none'
+}
+
+function endGame () {
+  clearInterval(gameInterval)
+}
 
 
 /* ------------------------------------------ Game Characters ------------------------------------------ */
@@ -86,8 +107,8 @@ class BMO {
       if (this.movement.down ) {
         // allow player to move down from initialized position
         this.y += this.speed
-        if(this.y >= 240) {
-          this.y = 240
+        if(this.y >= 270) {
+          this.y = 270
         }
       }
     }
@@ -294,6 +315,11 @@ const trap = new RatTrap()
           console.log('Current Score - Mouse: ', scoreCounter)
           // target.alive = false
           displayScore.innerText = scoreCounter
+
+          if (scoreCounter >= 25) {
+            console.log('You beat the timer!')
+            clearInterval(gameInterval)
+          }
         }
       }
       /* ---------- RATS! ---------- */
@@ -310,6 +336,11 @@ const trap = new RatTrap()
             })
             scoreCounter += addRat
             console.log('Two POINTS brotha!')
+
+            if (scoreCounter >= 25) {
+              console.log('You beat the timer!')
+              clearInterval(gameInterval)
+            }
             // target.alive = false
             displayScore.innerText = scoreCounter
           }
@@ -325,11 +356,17 @@ const trap = new RatTrap()
                 trapArray.splice(trapArray.indexOf(trap), 1)
               })
               console.log('Owie! That hurt')
+
+              clearInterval(gameInterval)
+
               
               // target.alive = false
               
             }
           }
+
+          /* ------------------------------------------ Start Screen! ------------------------------------------ */
+
           
           /* ------------------------------------------ Game Loop! ------------------------------------------ */
           
@@ -343,7 +380,7 @@ const trap = new RatTrap()
             // mouse.newMice()
             /* --- Collision Detection --- */
             if (mouse.alive) {
-              miceArray.forEach((mouse, i) => { 
+              miceArray.forEach((mouse) => { 
                 mouse.render() 
                 mouse.animateMouse()
                 mouse.deleteMouse()
@@ -369,20 +406,16 @@ const trap = new RatTrap()
                 ratPoints(rat)
               })
             }
-          }
-          
-          if (scoreCounter <= 2) {
-            clearInterval(gameLoop)
-            console.log('end game')
-          }
-          const gameInterval = setInterval(gameLoop, 16)
+            
+            let frameCounter = 0
+            frameCounter += 1
+            console.log('FPS: ', frameCounter)
 
-          /* ------------------------------------------ End Game Loop! ------------------------------------------ */
-          
-          
-          
-          
-          
+          }       
+          // gameInterval = setInterval(gameLoop, 16)
+          /* ------------------------------------------ End Game Conditions! ------------------------------------------ */
+          console.log(scoreCounter)
+
           
     /* ---------- Calls and Such ---------- */
     // call gameLoop and setInterval
