@@ -37,15 +37,18 @@ canvas {
   position: relative;
 }
 #startScreen {
-  height: 330px;
-  width: 595px;
+  height: 50.4%;
+  width: 950px;
+  background: rgba(0, 0, 0, 0.25);
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
 }
 #winScreen {
-  height: 330px;
+  padding: 15px;
+  border-radius: 12px;
+  height: 30px;
   color: white;
   width: 595px;
   position: absolute;
@@ -54,6 +57,21 @@ canvas {
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
+  /* top: 350px; */
+}
+#timer {
+  padding: 3px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  height: 30px;
+  color: white;
+  width: 100px;
+  position: absolute;
+  top: 19%;
+  transform: translateY(-40%);
+  left: 28.5%;
+  transform: translateX(-50%);
+  z-index: 3;
   /* top: 350px; */
 }
 .h2p {

@@ -2,8 +2,12 @@
 const game = document.getElementById('canvas')
 const displayGame = document.querySelector('canvas')
 const startDiv = document.getElementById('startScreen')
-document.getElementById('start-game').addEventListener('click', startGame)
+const displayTimer = document.getElementById('timer')
 const ctx = game.getContext('2d')
+const displayScore = document.getElementById('score-counter')
+const winScreen = document.getElementById('winScreen')
+const startBtn = document.getElementById('start-game')
+document.getElementById('start-game').addEventListener('click', startGame)
 
 // let gameInterval = false
 // let setGameInterval = null
@@ -13,6 +17,7 @@ let gameInterval
 let miceInterval
 let ratInterval
 let trapInterval
+let timerInterval
 
 game.setAttribute('width', getComputedStyle(game)['width'])
 game.width = '600'
@@ -28,8 +33,9 @@ game.height = '300'
 /* ------------------------------------------ Start Game ------------------------------------------ */
 
 // create function that loads Canvas after Start Game button is pressed
-// while start game/h2p screen is displayed, gameRunning should be false
-// while star game button is pressed, gameRunning should be true and display canvas
+// If loop intervals are still set to null, no win/start screen will be displayed
+// If loop intervals are called onClick, start screen will be set to hidden, and win screen will show as block
+// Win screen should be empty until win screen text is called
 function startGame() {
   console.log('start game!')
   if (!gameInterval) {
@@ -37,6 +43,15 @@ function startGame() {
     miceInterval = setInterval(newMice, 1800)
     ratInterval = setInterval(newRats, 2100)
     trapInterval = setInterval(newTrap, 5000)
+    timerInterval = setInterval(gameTimer, 1000)
+    startBtn.innerText = 'Pause Game'
+} else {
+  clearInterval(gameInterval)
+  clearInterval(miceInterval)
+  clearInterval(ratInterval)
+  clearInterval(trapInterval)
+  clearInterval(timerInterval)
+  startBtn.innerText = 'Start Game'
 } 
   // clearInterval(gameInterval)
 
@@ -44,11 +59,11 @@ function startGame() {
   // displayGame.style.margin = 'auto'
   startDiv.style.display = 'none'
   winScreen.style.display = 'block'
+  displayTimer.style.display = 'block'
+
 }
 
-function endGame () {
-  clearInterval(gameInterval)
-}
+// }
 
 
 /* ------------------------------------------ Game Characters ------------------------------------------ */
@@ -66,7 +81,6 @@ class BMO {
     this.width = width
     this.height = height
     this.alive = true;
-    //  render contents (for now, create a rectangle)
     this.speed = 4.5
     // create movement functionality 
     this.movement = {
@@ -123,7 +137,6 @@ class BMO {
 
     this.render = function () {
       ctx.drawImage
-      // ctx.fillRect(this.x, this.y, this.width, this.height)
       ctx.drawImage(bmoImage, this.x, this.y, this.width, this.height)
     }
   }
@@ -132,10 +145,7 @@ class BMO {
 const player = new BMO(25, 150, 35, 28)
 
 /* ------------------------------------------ Target Arrays ------------------------------------------ */
-
-// let mouseTimer = 0
-// let mouseInterval = 500
-// let resetTimer = 0
+// Empty target arrays, which will add target classes when called in interval loop
 const miceArray = []
 const ratArray = []
 const trapArray = []
@@ -183,12 +193,8 @@ class Mouse {
   }
 
   /* -------------------------------- */
-
-
-  // create empty array for mouse class
+// global target class
 const mouse = new Mouse()
-
-// for loop pushes new Mouse() into miceArray (no greater than 35 mice are generated)
 
 /* ------------------------------------------ Rat Class ------------------------------------------ */
 const ratImage = new Image()
@@ -201,18 +207,13 @@ class Rat {
     this.width = width
     this.height = height
     this.alive = true;
-    // add this.img
-    // give Mouse spawn functionality form right side of canvas
 
-    //  render contents (for now, create a rectangle)
     this.speed = 5.5
-    // create movement functionality 
   }
 
 
     render () {
       ctx.drawImage
-      // ctx.fillStyle = this.color
       ctx.drawImage(ratImage, this.x, this.y, this.width, this.height)
     }
 
@@ -231,7 +232,6 @@ class Rat {
 
   }
 
-  // create empty array for mouse class
    /* ------------------------------------------ Rat Array ------------------------------------------ */
 
    function newRats () {
@@ -243,7 +243,7 @@ class Rat {
 const rat = new Rat()
 
 /* ------------------------------------------ Enemy Class ------------------------------------------ */
-//  mice traps will decrement player health 
+//  mice traps will decrement player health (functionality not added yet)
 const trapImage = new Image()
 trapImage.src = 'targets/Rat_trap.png'
 
@@ -254,12 +254,8 @@ class RatTrap {
     this.width = width
     this.height = height
     this.alive = true;
-    // add this.img
-    // give Mouse spawn functionality form right side of canvas
 
-    //  render contents (for now, create a rectangle)
     this.speed = 3.2
-    // create movement functionality 
   }
     render () {
       ctx.drawImage
@@ -288,14 +284,9 @@ const trap = new RatTrap()
           trapArray.push(new RatTrap(600, Math.floor(Math.random() * game.height) - 25, 45, 28))
         }
     }
-    
-    // move all to one file
-    
-    
+
     /* ---------- Collision Detection Baby! ---------- */
     
-    const displayScore = document.getElementById('score-counter')
-    const winScreen = document.getElementById('winScreen')
     
     let scoreCounter = 0
     
@@ -316,6 +307,8 @@ const trap = new RatTrap()
           if (scoreCounter >= 25) {
             console.log('You beat the timer!')
             clearInterval(gameInterval)
+            clearInterval(timerInterval)
+
             winScreen.innerText = 'YOU WIN! You Collected All 25 Points'
           }
         }
@@ -338,6 +331,8 @@ const trap = new RatTrap()
             if (scoreCounter >= 25) {
               console.log('You beat the timer!')
               clearInterval(gameInterval)
+              clearInterval(timerInterval)
+
               winScreen.innerText = 'YOU WIN! You Collected All 25 Points'
             }
             displayScore.innerText = scoreCounter
@@ -356,12 +351,30 @@ const trap = new RatTrap()
               console.log('Owie! That hurt')
 
               clearInterval(gameInterval)
+              clearInterval(timerInterval)
+
               winScreen.innerText = 'MWAHAHA! You Lose! You Hit The Trap Bozo... Totally not rad brotha'
+              // winScreen.style.background = 'rgba(0, 0, 0, 0.25);'
             }
           }
 
-          /* ------------------------------------------ Start Screen! ------------------------------------------ */
+          /* ------------------------------------------ Game Timer! ------------------------------------------ */
+          let startTimer = 46
 
+          function gameTimer () {
+
+            startTimer--
+            displayTimer.innerText = 'Time: ' + startTimer
+
+
+            if (startTimer == 0) {
+              clearInterval(gameInterval)
+              clearInterval(timerInterval)
+              winScreen.innerText = 'Oh No Bro :( Ran outta time stinker :['
+
+            }
+          }
+          gameTimer()
           
           /* ------------------------------------------ Game Loop! ------------------------------------------ */
           
@@ -426,6 +439,7 @@ const trap = new RatTrap()
       }
     })
 
+  
 newMice()
 newRats()
 newTrap()
