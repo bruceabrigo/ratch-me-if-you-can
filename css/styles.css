@@ -24,7 +24,8 @@ h2 {
   font-family: 'Irish Grover', cursive;
   color: #FFF;
   padding: 12px 20px;
-  border: 1px solid grey;
+  border: 1px;
+  border-radius: 15px;
   cursor: pointer;
 }
 #start-game:hover {
@@ -37,8 +38,8 @@ canvas {
   position: relative;
 }
 #startScreen {
-  height: 50.4%;
-  width: 950px;
+  height: 50%;
+  width: 100;
   background: rgba(0, 0, 0, 0.25);
   position: absolute;
   left: 50%;

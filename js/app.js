@@ -414,15 +414,10 @@ const trap = new RatTrap()
                 ratPoints(rat)
               })
             }
-            
-            let frameCounter = 0
-            frameCounter += 1
-            console.log('FPS: ', frameCounter)
 
           }       
           // gameInterval = setInterval(gameLoop, 16)
           /* ------------------------------------------ End Game Conditions! ------------------------------------------ */
-          console.log(scoreCounter)
 
           
     /* ---------- Calls and Such ---------- */
