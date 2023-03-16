@@ -13,7 +13,8 @@ document.getElementById('start-game').addEventListener('click', startGame)
 // let setGameInterval = null
 // style the canvas height and width
 
-let gameInterval
+let isPaused = false
+let gameInterval 
 let miceInterval
 let ratInterval
 let trapInterval
@@ -38,13 +39,14 @@ game.height = '300'
 // Win screen should be empty until win screen text is called
 function startGame() {
   console.log('start game!')
-  if (!gameInterval) {
+  if (!isPaused) {
     gameInterval = setInterval(gameLoop, 16)
     miceInterval = setInterval(newMice, 1800)
     ratInterval = setInterval(newRats, 2100)
     trapInterval = setInterval(newTrap, 5000)
     timerInterval = setInterval(gameTimer, 1000)
     startBtn.innerText = 'Pause Game'
+    isPaused = true
 } else {
   clearInterval(gameInterval)
   clearInterval(miceInterval)
@@ -52,6 +54,7 @@ function startGame() {
   clearInterval(trapInterval)
   clearInterval(timerInterval)
   startBtn.innerText = 'Start Game'
+  isPaused = false
 } 
   // clearInterval(gameInterval)
 
